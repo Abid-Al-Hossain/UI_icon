@@ -132,17 +132,24 @@ export default function LivePreview({ state }: { state: IconState }) {
           {state.gradientEnabled && (
             <svg style={{ position: "absolute", width: 0, height: 0 }} aria-hidden="true">
               <defs>
-                <linearGradient
-                  id={gradId}
-                  x1="0%"
-                  y1="0%"
-                  x2="100%"
-                  y2="0%"
-                  gradientTransform={`rotate(${state.gradientAngle})`}
-                >
-                  <stop offset="0%" stopColor={state.gradientStart} />
-                  <stop offset="100%" stopColor={state.gradientEnd} />
-                </linearGradient>
+                {state.gradientType === "radial" ? (
+                  <radialGradient id={gradId} cx="50%" cy="50%" r="50%">
+                    <stop offset="0%" stopColor={state.gradientStart} />
+                    <stop offset="100%" stopColor={state.gradientEnd} />
+                  </radialGradient>
+                ) : (
+                  <linearGradient
+                    id={gradId}
+                    x1="0%"
+                    y1="0%"
+                    x2="100%"
+                    y2="0%"
+                    gradientTransform={`rotate(${state.gradientAngle})`}
+                  >
+                    <stop offset="0%" stopColor={state.gradientStart} />
+                    <stop offset="100%" stopColor={state.gradientEnd} />
+                  </linearGradient>
+                )}
               </defs>
             </svg>
           )}

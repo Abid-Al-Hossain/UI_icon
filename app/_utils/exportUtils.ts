@@ -145,10 +145,17 @@ export default function CustomIcon() {
           {s.gradientEnabled ? (
             <svg width="0" height="0" style={{ position: "absolute" }} aria-hidden="true">
               <defs>
-                <linearGradient id={gradId} gradientTransform={\`rotate(\${s.gradientAngle})\`}>
-                  <stop offset="0%" stopColor={s.gradientStart} />
-                  <stop offset="100%" stopColor={s.gradientEnd} />
-                </linearGradient>
+                {s.gradientType === "radial" ? (
+                  <radialGradient id={gradId} cx="50%" cy="50%" r="50%">
+                    <stop offset="0%" stopColor={s.gradientStart} />
+                    <stop offset="100%" stopColor={s.gradientEnd} />
+                  </radialGradient>
+                ) : (
+                  <linearGradient id={gradId} gradientTransform={\`rotate(\${s.gradientAngle})\`}>
+                    <stop offset="0%" stopColor={s.gradientStart} />
+                    <stop offset="100%" stopColor={s.gradientEnd} />
+                  </linearGradient>
+                )}
               </defs>
             </svg>
           ) : null}
