@@ -9,6 +9,7 @@ import {
 import ColorControl from "@/components/shared/color/ColorControl";
 import SizeControl from "@/components/shared/input/SizeControl";
 import { SectionCard } from "@/components/shared/layout/SectionCard";
+import { SegmentedControl } from "@/components/shared/input/SegmentedControl";
 
 export default function IconColorsSection({
   state,
@@ -96,19 +97,26 @@ export default function IconColorsSection({
                 </div>
               </div>
 
+              <SegmentedControl
+                value={state.gradientType}
+                onChange={(v) => setKey("gradientType")(v)}
+                items={[{ value: "linear", label: "Linear" }, { value: "radial", label: "Radial" }]}
+              />
               <ColorControl
                 label="Gradient start"
                 value={state.gradientStart}
                 onChange={setKey("gradientStart")}
               />
-              <SizeControl
-                label="Gradient Angle"
-                value={state.gradientAngle}
-                onChange={setFloat("gradientAngle")}
-                min={0}
-                max={360}
-                unit="deg"
-              />
+              {state.gradientType !== "radial" && (
+                <SizeControl
+                  label="Gradient Angle"
+                  value={state.gradientAngle}
+                  onChange={setFloat("gradientAngle")}
+                  min={0}
+                  max={360}
+                  unit="deg"
+                />
+              )}
               <ColorControl
                 label="Gradient end"
                 value={state.gradientEnd}
