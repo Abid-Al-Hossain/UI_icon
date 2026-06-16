@@ -79,6 +79,18 @@ export function resolveIconContainerStyle(state: IconState): React.CSSProperties
     WebkitBackdropFilter: state.glassBlur > 0 ? `blur(${state.glassBlur}px)` : undefined,
     overflow: "hidden",
     transformStyle: "preserve-3d",
+    opacity: state.disabled ? state.disabledOpacity : 1,
+    cursor: state.disabled ? state.disabledCursor : state.clickable ? state.cursorType : undefined,
+    pointerEvents: state.disabled ? "none" : undefined,
+    transition: state.transitionDuration > 0 ? `transform ${state.transitionDuration}ms ${state.transitionEasing}, box-shadow ${state.transitionDuration}ms ${state.transitionEasing}` : undefined,
+  };
+}
+
+export function resolveIconFocusOutline(state: IconState): React.CSSProperties {
+  if (!state.focusRingEnabled || !state.clickable) return {};
+  return {
+    outline: `${state.focusRingWidth}px solid ${state.focusRingColor}`,
+    outlineOffset: state.focusRingOffset,
   };
 }
 

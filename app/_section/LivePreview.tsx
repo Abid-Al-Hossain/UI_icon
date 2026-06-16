@@ -10,6 +10,7 @@ import {
   getIconEntranceInitial,
   getIconHoverVariant,
   resolveIconContainerStyle,
+  resolveIconFocusOutline,
   resolveIconOuterTransform,
   resolveIconRole,
   resolveIconThreeDTransform,
@@ -92,13 +93,27 @@ export default function LivePreview({ state }: { state: IconState }) {
   const uniqueId = React.useId();
   const gradId = `icon-grad-${uniqueId}`;
   const isGlass = state.glassBlur > 0;
+  const [isHovered, setIsHovered] = React.useState(false);
+  const [isPressed, setIsPressed] = React.useState(false);
+  const [isFocused, setIsFocused] = React.useState(false);
+  const interactive = state.clickable && !state.disabled;
   const containerStyle = resolveIconContainerStyle(state);
+  const focusOutline = isFocused ? resolveIconFocusOutline(state) : {};
   const hoverVariant = getIconHoverVariant(state.hoverEffect, state.color);
+  const mergedHoverVariant = interactive ? { ...hoverVariant, scale: state.hoverScale } : hoverVariant;
   const animateVariant = getIconAnimateVariant(state);
   const entranceInitial = getIconEntranceInitial(state.entranceAnimation);
   const entranceAnimate = getIconEntranceAnimate(state.entranceAnimation);
   const transform2D = resolveIconOuterTransform(state);
   const role = resolveIconRole(state);
+  const displayColor = state.disabled
+    ? state.disabledColor
+    : interactive && isPressed
+      ? state.activeColor
+      : interactive && isHovered
+        ? state.hoverColor
+        : state.color;
+  const displayFill = interactive && isHovered ? state.hoverFillColor : state.fillColor;
 
   return (
     <div className="flex min-h-[300px] items-center justify-center p-10">
@@ -116,13 +131,25 @@ export default function LivePreview({ state }: { state: IconState }) {
         role={role}
       >
         <motion.div
+          tabIndex={interactive ? state.tabIndex : undefined}
+          onMouseEnter={() => interactive && setIsHovered(true)}
+          onMouseLeave={() => {
+            setIsHovered(false);
+            setIsPressed(false);
+          }}
+          onPointerDown={() => interactive && setIsPressed(true)}
+          onPointerUp={() => setIsPressed(false)}
+          onFocus={() => interactive && setIsFocused(true)}
+          onBlur={() => setIsFocused(false)}
           style={{
             ...containerStyle,
+            ...focusOutline,
             transform: resolveIconThreeDTransform(state),
           }}
           initial={false}
           animate={animateVariant}
-          whileHover={hoverVariant}
+          whileHover={interactive ? mergedHoverVariant : hoverVariant}
+          whileTap={interactive ? { scale: state.activeScale } : undefined}
           transition={{
             duration: state.animationDuration,
             repeat: state.animationType !== "none" ? Infinity : 0,
@@ -159,13 +186,13 @@ export default function LivePreview({ state }: { state: IconState }) {
             custom={state.library === "custom"}
             customSvg={state.customSvg}
             size={state.size}
-            color={state.gradientEnabled ? `url(#${gradId})` : state.color}
+            color={state.gradientEnabled ? `url(#${gradId})` : displayColor}
             strokeWidth={state.strokeWidth}
             absoluteStrokeWidth
-            fill={state.fillColor}
+            fill={displayFill}
             fillOpacity={state.fillOpacity}
             opacity={state.opacity}
-            style={{ opacity: state.opacity }}
+            style={{ opacity: state.opacity, transition: state.transitionDuration > 0 ? `color ${state.transitionDuration}ms ${state.transitionEasing}` : undefined }}
           />
 
           {isGlass && (

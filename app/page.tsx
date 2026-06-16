@@ -23,6 +23,7 @@ import IconEffectsSection from "./_section/IconEffectsSection";
 import IconTransformSection from "./_section/IconTransformSection";
 import IconAnimationSection from "./_section/IconAnimationSection";
 import IconAccessibilitySection from "./_section/IconAccessibilitySection";
+import IconStatesSection from "./_section/IconStatesSection";
 import IconPresetsSection from "./_section/IconPresetsSection";
 import { buildIconExportPayload } from "./_utils/exportUtils";
 
@@ -99,6 +100,7 @@ export default function IconPlaygroundPage() {
     { id: "transform", label: "Transform", component: IconTransformSection },
     { id: "effects", label: "Effects", component: IconEffectsSection },
     { id: "motion", label: "Motion", component: IconAnimationSection },
+    { id: "states", label: "States", component: IconStatesSection },
     { id: "accessibility", label: "Accessibility", component: IconAccessibilitySection },
   ];
 

@@ -89,6 +89,22 @@ export default function CustomIcon() {
   const entranceAnimate = ${JSON.stringify(entranceAnimate)};
   const hoverVariant = s.hoverEffect !== "none" ? ${hoverVariant} : {};
   const animateVariant = hasAnimation ? ${animateVariant} : {};
+  const [isHovered, setIsHovered] = React.useState(false);
+  const [isPressed, setIsPressed] = React.useState(false);
+  const [isFocused, setIsFocused] = React.useState(false);
+  const interactive = s.clickable && !s.disabled;
+  const mergedHoverVariant = interactive ? { ...hoverVariant, scale: s.hoverScale } : hoverVariant;
+  const displayColor = s.disabled
+    ? s.disabledColor
+    : interactive && isPressed
+      ? s.activeColor
+      : interactive && isHovered
+        ? s.hoverColor
+        : s.color;
+  const displayFill = interactive && isHovered ? s.hoverFillColor : s.fillColor;
+  const focusOutline = isFocused && s.focusRingEnabled && interactive
+    ? { outline: \`\${s.focusRingWidth}px solid \${s.focusRingColor}\`, outlineOffset: s.focusRingOffset }
+    : {};
 
   return (
     <div
@@ -114,6 +130,16 @@ export default function CustomIcon() {
         role={${resolvedRole ? JSON.stringify(resolvedRole) : "undefined"}}
       >
         <motion.div
+          tabIndex={interactive ? s.tabIndex : undefined}
+          onMouseEnter={() => interactive && setIsHovered(true)}
+          onMouseLeave={() => {
+            setIsHovered(false);
+            setIsPressed(false);
+          }}
+          onPointerDown={() => interactive && setIsPressed(true)}
+          onPointerUp={() => setIsPressed(false)}
+          onFocus={() => interactive && setIsFocused(true)}
+          onBlur={() => setIsFocused(false)}
           style={{
             position: "relative",
             display: "flex",
@@ -131,10 +157,16 @@ export default function CustomIcon() {
             overflow: "hidden",
             transform: ${threeDTransform ? JSON.stringify(threeDTransform) : "undefined"},
             transformStyle: "preserve-3d",
+            opacity: s.disabled ? s.disabledOpacity : 1,
+            cursor: s.disabled ? s.disabledCursor : s.clickable ? s.cursorType : undefined,
+            pointerEvents: s.disabled ? "none" : undefined,
+            transition: s.transitionDuration > 0 ? \`transform \${s.transitionDuration}ms \${s.transitionEasing}, box-shadow \${s.transitionDuration}ms \${s.transitionEasing}\` : undefined,
+            ...focusOutline,
           }}
           initial={false}
           animate={animateVariant}
-          whileHover={hoverVariant}
+          whileHover={interactive ? mergedHoverVariant : hoverVariant}
+          whileTap={interactive ? { scale: s.activeScale } : undefined}
           transition={{
             duration: s.animationDuration,
             repeat: hasAnimation && s.animationRepeat ? Infinity : 0,
@@ -166,8 +198,8 @@ export default function CustomIcon() {
             customSvg={s.customSvg}
             size={s.size}
             strokeWidth={s.strokeWidth}
-            color={s.gradientEnabled ? \`url(#\${gradId})\` : s.color}
-            fillColor={s.fillColor}
+            color={s.gradientEnabled ? \`url(#\${gradId})\` : displayColor}
+            fillColor={displayFill}
             fillOpacity={s.fillOpacity}
             opacity={s.opacity}
           />

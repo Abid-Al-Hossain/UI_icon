@@ -132,6 +132,32 @@ export interface IconState {
   ariaLabel: string;
   ariaRole: "img" | "presentation" | "none";
   ariaHidden: boolean;
+  tabIndex: number;
+  clickable: boolean;
+  cursorType: "default" | "pointer" | "not-allowed";
+
+  // --- Focus Ring ---
+  focusRingEnabled: boolean;
+  focusRingWidth: number;
+  focusRingOffset: number;
+  focusRingColor: string;
+
+  // --- Transitions ---
+  transitionDuration: number;
+  transitionEasing: "ease" | "ease-in" | "ease-out" | "ease-in-out" | "linear";
+
+  // --- Disabled state ---
+  disabled: boolean;
+  disabledOpacity: number;
+  disabledCursor: "not-allowed" | "default" | "pointer";
+  disabledColor: string;
+
+  // --- Explicit hover/active colors ---
+  hoverColor: string;
+  hoverScale: number;
+  hoverFillColor: string;
+  activeColor: string;
+  activeScale: number;
 }
 
 export type IconSetter = <K extends keyof IconState>(
@@ -220,4 +246,26 @@ export const INITIAL_ICON_STATE: IconState = {
   ariaLabel: "",
   ariaRole: "img",
   ariaHidden: false,
+  tabIndex: 0,
+  clickable: false,
+  cursorType: "default",
+
+  focusRingEnabled: true,
+  focusRingWidth: 2,
+  focusRingOffset: 2,
+  focusRingColor: "#38bdf8",
+
+  transitionDuration: 200,
+  transitionEasing: "ease",
+
+  disabled: false,
+  disabledOpacity: 0.5,
+  disabledCursor: "not-allowed",
+  disabledColor: "#94a3b8",
+
+  hoverColor: "#3b82f6",
+  hoverScale: 1.08,
+  hoverFillColor: "#3b82f6",
+  activeColor: "#2563eb",
+  activeScale: 0.95,
 };
