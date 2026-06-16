@@ -23,6 +23,7 @@ export default function IconStatesSection({
   return (
     <div className="space-y-6">
       <SectionCard title="Interaction" subtitle="Make the icon a clickable control.">
+      <div className="space-y-4">
         <div className="flex items-center gap-2">
           <input
             id="icon-clickable-toggle"
@@ -45,17 +46,21 @@ export default function IconStatesSection({
           ]}
         />
         <SizeControl label="Tab Index" value={state.tabIndex} onChange={setFloat("tabIndex")} min={-1} max={10} unit="" />
-      </SectionCard>
+      </div>
+    </SectionCard>
 
       <SectionCard title="Hover & Active Colors" subtitle="Explicit colors used when clickable is on.">
+      <div className="space-y-4">
         <ColorControl label="Hover stroke" value={state.hoverColor} onChange={setKey("hoverColor")} />
         <ColorControl label="Hover fill" value={state.hoverFillColor} onChange={setKey("hoverFillColor")} />
         <SizeControl label="Hover scale" value={state.hoverScale} onChange={setFloat("hoverScale")} min={0.8} max={1.5} step={0.01} unit="x" />
         <ColorControl label="Active stroke" value={state.activeColor} onChange={setKey("activeColor")} />
         <SizeControl label="Active scale" value={state.activeScale} onChange={setFloat("activeScale")} min={0.7} max={1.2} step={0.01} unit="x" />
-      </SectionCard>
+      </div>
+    </SectionCard>
 
       <SectionCard title="Focus Ring" subtitle="Keyboard focus indicator for clickable icons.">
+      <div className="space-y-4">
         <div className="flex items-center gap-2">
           <input
             id="icon-focusring-toggle"
@@ -71,9 +76,11 @@ export default function IconStatesSection({
         <SizeControl label="Ring width" value={state.focusRingWidth} onChange={setFloat("focusRingWidth")} min={1} max={6} unit="px" />
         <SizeControl label="Ring offset" value={state.focusRingOffset} onChange={setFloat("focusRingOffset")} min={0} max={8} unit="px" />
         <ColorControl label="Ring color" value={state.focusRingColor} onChange={setKey("focusRingColor")} />
-      </SectionCard>
+      </div>
+    </SectionCard>
 
       <SectionCard title="Transitions" subtitle="Animation timing for hover/active/disabled changes.">
+      <div className="space-y-4">
         <SizeControl label="Duration" value={state.transitionDuration} onChange={setFloat("transitionDuration")} min={0} max={1000} step={10} unit="ms" />
         <SegmentedControl
           value={state.transitionEasing}
@@ -86,9 +93,11 @@ export default function IconStatesSection({
             { value: "linear", label: "Linear" },
           ]}
         />
-      </SectionCard>
+      </div>
+    </SectionCard>
 
       <SectionCard title="Disabled State" subtitle="Greyed-out, non-interactive icon.">
+      <div className="space-y-4">
         <div className="flex items-center gap-2">
           <input
             id="icon-disabled-toggle"
@@ -112,7 +121,8 @@ export default function IconStatesSection({
             { value: "pointer", label: "Pointer" },
           ]}
         />
-      </SectionCard>
+      </div>
+    </SectionCard>
     </div>
   );
 }
